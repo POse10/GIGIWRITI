@@ -33,21 +33,28 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.href}
-                to={item.href}
-                className={`font-medium transition-colors duration-200 relative group ${
-                  location.pathname === item.href
-                    ? 'text-primary'
-                    : 'text-foreground hover:text-primary'
-                }`}
-              >
-                {item.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            ))}
+          <nav className="hidden md:flex items-center">
+            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-2 py-2 shadow-glow">
+              <div className="flex items-center space-x-1">
+                {navigation.map((item, index) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={`relative px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 group overflow-hidden ${
+                      location.pathname === item.href
+                        ? 'bg-primary text-white shadow-lg transform scale-105'
+                        : 'text-foreground hover:bg-white/20 hover:text-primary hover:scale-105'
+                    }`}
+                  >
+                    <span className="relative z-10">{item.label}</span>
+                    {location.pathname === item.href && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary animate-pulse opacity-80"></div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </nav>
 
           {/* Language Toggle & CTA */}
