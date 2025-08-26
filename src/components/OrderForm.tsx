@@ -11,9 +11,10 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { CalendarIcon, Upload, DollarSign } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-
 const OrderForm = () => {
-  const { t } = useLanguage();
+  const {
+    t
+  } = useLanguage();
   const [formData, setFormData] = useState({
     type: '',
     topic: '',
@@ -24,32 +25,49 @@ const OrderForm = () => {
   });
   const [price, setPrice] = useState(0);
   const [currency, setCurrency] = useState<'USD' | 'VND'>('USD');
-
-  const serviceTypes = [
-    { value: 'assignment', label: t('service-assignment', 'Assignment', 'Bài tập') },
-    { value: 'essay', label: t('service-essay', 'Essay', 'Tiểu luận') },
-    { value: 'report', label: t('service-report', 'Report', 'Báo cáo') },
-    { value: 'dissertation', label: t('service-dissertation', 'Dissertation', 'Luận văn') },
-    { value: 'thesis', label: t('service-thesis', 'Thesis', 'Luận án') },
-    { value: 'slides', label: t('service-slides', 'Slide Generation', 'Tạo slide') },
-    { value: 'script', label: t('service-script', 'Script Generation', 'Tạo kịch bản') },
-    { value: 'editing', label: t('service-editing', 'Editing/Proofreading', 'Chỉnh sửa/Hiệu đính') },
-    { value: 'cv', label: t('service-cv', 'CV/Resume Design', 'Thiết kế CV/Hồ sơ') }
-  ];
-
-  const aimLevels = [
-    { value: 'PA', label: 'PA (Pass)' },
-    { value: 'CR', label: 'CR (Credit)' },
-    { value: 'DI', label: 'DI (Distinction)' }
-  ];
-
+  const serviceTypes = [{
+    value: 'assignment',
+    label: t('service-assignment', 'Assignment', 'Bài tập')
+  }, {
+    value: 'essay',
+    label: t('service-essay', 'Essay', 'Tiểu luận')
+  }, {
+    value: 'report',
+    label: t('service-report', 'Report', 'Báo cáo')
+  }, {
+    value: 'dissertation',
+    label: t('service-dissertation', 'Dissertation', 'Luận văn')
+  }, {
+    value: 'thesis',
+    label: t('service-thesis', 'Thesis', 'Luận án')
+  }, {
+    value: 'slides',
+    label: t('service-slides', 'Slide Generation', 'Tạo slide')
+  }, {
+    value: 'script',
+    label: t('service-script', 'Script Generation', 'Tạo kịch bản')
+  }, {
+    value: 'editing',
+    label: t('service-editing', 'Editing/Proofreading', 'Chỉnh sửa/Hiệu đính')
+  }, {
+    value: 'cv',
+    label: t('service-cv', 'CV/Resume Design', 'Thiết kế CV/Hồ sơ')
+  }];
+  const aimLevels = [{
+    value: 'PA',
+    label: 'PA (Pass)'
+  }, {
+    value: 'CR',
+    label: 'CR (Credit)'
+  }, {
+    value: 'DI',
+    label: 'DI (Distinction)'
+  }];
   const calculatePrice = () => {
     if (!formData.type || !formData.words || !formData.dueDate || !formData.aim) return 0;
-
     const words = parseInt(formData.words);
     const pages = Math.ceil(words / 250);
     const daysUntilDue = Math.ceil((formData.dueDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
-    
     let basePrice = 0;
 
     // Calculate base price based on service type and urgency
@@ -105,36 +123,29 @@ const OrderForm = () => {
         basePrice = 18;
       }
     }
-
     let totalPrice = basePrice * pages;
 
     // Apply discount if valid code
     if (formData.discountCode === '#WELCOMETOSTUDYHUB748') {
       totalPrice *= 0.5; // 50% discount
     }
-
     return totalPrice;
   };
-
   useEffect(() => {
     setPrice(calculatePrice());
   }, [formData]);
-
   const convertPrice = (usdPrice: number) => {
     return currency === 'USD' ? usdPrice : Math.round(usdPrice * 26225);
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Here you would typically send the data to your backend/email
     console.log('Order submitted:', formData, 'Price:', price);
   };
-
-  return (
-    <Card className="glass-card animate-slide-in">
+  return <Card className="glass-card animate-slide-in">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl font-poppins font-bold text-gradient flex items-center justify-center space-x-2">
-          <DollarSign className="w-6 h-6" />
+          
           <span>{t('order-form-title', 'Place an Order', 'Đặt đơn hàng')}</span>
         </CardTitle>
       </CardHeader>
@@ -143,16 +154,17 @@ const OrderForm = () => {
           {/* Service Type */}
           <div className="space-y-2">
             <Label>{t('service-type', 'Service Type', 'Loại dịch vụ')} *</Label>
-            <Select onValueChange={(value) => setFormData({...formData, type: value})}>
+            <Select onValueChange={value => setFormData({
+            ...formData,
+            type: value
+          })}>
               <SelectTrigger>
                 <SelectValue placeholder={t('select-service', 'Select a service', 'Chọn dịch vụ')} />
               </SelectTrigger>
               <SelectContent>
-                {serviceTypes.map((service) => (
-                  <SelectItem key={service.value} value={service.value}>
+                {serviceTypes.map(service => <SelectItem key={service.value} value={service.value}>
                     {service.label}
-                  </SelectItem>
-                ))}
+                  </SelectItem>)}
               </SelectContent>
             </Select>
           </div>
@@ -160,22 +172,19 @@ const OrderForm = () => {
           {/* Topic */}
           <div className="space-y-2">
             <Label>{t('topic', 'Topic/Subject', 'Chủ đề/Môn học')} *</Label>
-            <Input 
-              placeholder={t('topic-placeholder', 'Enter your topic or subject', 'Nhập chủ đề hoặc môn học')}
-              value={formData.topic}
-              onChange={(e) => setFormData({...formData, topic: e.target.value})}
-            />
+            <Input placeholder={t('topic-placeholder', 'Enter your topic or subject', 'Nhập chủ đề hoặc môn học')} value={formData.topic} onChange={e => setFormData({
+            ...formData,
+            topic: e.target.value
+          })} />
           </div>
 
           {/* Number of Words */}
           <div className="space-y-2">
             <Label>{t('words', 'Number of Words', 'Số từ')} *</Label>
-            <Input 
-              type="number"
-              placeholder={t('words-placeholder', 'Enter number of words', 'Nhập số từ')}
-              value={formData.words}
-              onChange={(e) => setFormData({...formData, words: e.target.value})}
-            />
+            <Input type="number" placeholder={t('words-placeholder', 'Enter number of words', 'Nhập số từ')} value={formData.words} onChange={e => setFormData({
+            ...formData,
+            words: e.target.value
+          })} />
           </div>
 
           {/* Due Date */}
@@ -183,24 +192,16 @@ const OrderForm = () => {
             <Label>{t('due-date', 'Due Date', 'Ngày hết hạn')} *</Label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !formData.dueDate && "text-muted-foreground"
-                  )}
-                >
+                <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !formData.dueDate && "text-muted-foreground")}>
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {formData.dueDate ? format(formData.dueDate, "PPP") : t('pick-date', 'Pick a date', 'Chọn ngày')}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={formData.dueDate}
-                  onSelect={(date) => setFormData({...formData, dueDate: date})}
-                  initialFocus
-                />
+                <Calendar mode="single" selected={formData.dueDate} onSelect={date => setFormData({
+                ...formData,
+                dueDate: date
+              })} initialFocus />
               </PopoverContent>
             </Popover>
           </div>
@@ -208,16 +209,17 @@ const OrderForm = () => {
           {/* Aim Level */}
           <div className="space-y-2">
             <Label>{t('aim-level', 'Aim Level', 'Mức độ mục tiêu')} *</Label>
-            <Select onValueChange={(value) => setFormData({...formData, aim: value})}>
+            <Select onValueChange={value => setFormData({
+            ...formData,
+            aim: value
+          })}>
               <SelectTrigger>
                 <SelectValue placeholder={t('select-aim', 'Select aim level', 'Chọn mức độ mục tiêu')} />
               </SelectTrigger>
               <SelectContent>
-                {aimLevels.map((level) => (
-                  <SelectItem key={level.value} value={level.value}>
+                {aimLevels.map(level => <SelectItem key={level.value} value={level.value}>
                     {level.label}
-                  </SelectItem>
-                ))}
+                  </SelectItem>)}
               </SelectContent>
             </Select>
           </div>
@@ -236,16 +238,13 @@ const OrderForm = () => {
           {/* Discount Code */}
           <div className="space-y-2">
             <Label>{t('discount-code', 'Discount Code', 'Mã giảm giá')}</Label>
-            <Input 
-              placeholder="#WELCOMETOSTUDYHUB748"
-              value={formData.discountCode}
-              onChange={(e) => setFormData({...formData, discountCode: e.target.value})}
-            />
-            {formData.discountCode === '#WELCOMETOSTUDYHUB748' && (
-              <p className="text-sm text-accent font-medium">
+            <Input placeholder="#WELCOMETOSTUDYHUB748" value={formData.discountCode} onChange={e => setFormData({
+            ...formData,
+            discountCode: e.target.value
+          })} />
+            {formData.discountCode === '#WELCOMETOSTUDYHUB748' && <p className="text-sm text-accent font-medium">
                 ✅ {t('discount-applied', '50% discount applied!', 'Đã áp dụng giảm giá 50%!')}
-              </p>
-            )}
+              </p>}
           </div>
 
           {/* Price Display */}
@@ -253,12 +252,7 @@ const OrderForm = () => {
             <div className="flex items-center justify-between mb-2">
               <span className="font-semibold">{t('total-price', 'Total Price:', 'Tổng giá:')}</span>
               <div className="flex items-center space-x-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setCurrency(currency === 'USD' ? 'VND' : 'USD')}
-                >
+                <Button type="button" variant="outline" size="sm" onClick={() => setCurrency(currency === 'USD' ? 'VND' : 'USD')}>
                   {currency}
                 </Button>
               </div>
@@ -266,11 +260,9 @@ const OrderForm = () => {
             <div className="text-2xl font-bold text-primary">
               {currency === 'USD' ? '$' : ''}{convertPrice(price).toLocaleString()}{currency === 'VND' ? ' VND' : ''}
             </div>
-            {formData.discountCode === '#WELCOMETOSTUDYHUB748' && (
-              <div className="text-sm text-muted-foreground line-through">
+            {formData.discountCode === '#WELCOMETOSTUDYHUB748' && <div className="text-sm text-muted-foreground line-through">
                 {t('original-price', 'Original:', 'Giá gốc:')} {currency === 'USD' ? '$' : ''}{convertPrice(price * 2).toLocaleString()}{currency === 'VND' ? ' VND' : ''}
-              </div>
-            )}
+              </div>}
           </div>
 
           {/* Submit Button */}
@@ -279,8 +271,6 @@ const OrderForm = () => {
           </Button>
         </form>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default OrderForm;
