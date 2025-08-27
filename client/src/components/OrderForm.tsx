@@ -152,10 +152,61 @@ const OrderForm = () => {
   const convertPrice = (usdPrice: number) => {
     return currency === 'USD' ? usdPrice : Math.round(usdPrice * 26225);
   };
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend/email
-    console.log('Order submitted:', formData, 'Price:', price);
+    
+    // Validate required fields
+    if (!formData.type || !formData.topic || !formData.words || !formData.dueDate || !formData.aim) {
+      alert(t('please-fill-required', 'Please fill in all required fields', 'Vui lòng điền vào tất cả các trường bắt buộc'));
+      return;
+    }
+
+    try {
+      const orderPayload = {
+        serviceType: formData.type,
+        topic: formData.topic,
+        wordCount: parseInt(formData.words),
+        dueDate: formData.dueDate,
+        aimLevel: formData.aim,
+        totalPrice: price.toString(),
+        currency: currency,
+        discountApplied: discountApplied,
+        discountCode: discountApplied ? formData.discountCode : null,
+      };
+
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderPayload),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert(t('order-success', 
+          `Order submitted successfully! Order ID: ${result.orderId}. We will contact you soon.`, 
+          `Đơn hàng đã được gửi thành công! Mã đơn hàng: ${result.orderId}. Chúng tôi sẽ liên hệ với bạn sớm.`
+        ));
+        
+        // Reset form
+        setFormData({
+          type: '',
+          topic: '',
+          words: '',
+          dueDate: null,
+          aim: '',
+          discountCode: ''
+        });
+        setDiscountApplied(false);
+      } else {
+        alert(t('order-error', 'Failed to submit order. Please try again.', 'Không thể gửi đơn hàng. Vui lòng thử lại.'));
+      }
+    } catch (error) {
+      console.error('Order submission error:', error);
+      alert(t('order-error', 'Failed to submit order. Please try again.', 'Không thể gửi đơn hàng. Vui lòng thử lại.'));
+    }
   };
   return <Card className="glass-card animate-slide-in">
       <CardHeader className="text-center">
@@ -213,9 +264,9 @@ const OrderForm = () => {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={formData.dueDate} onSelect={date => setFormData({
+                <Calendar mode="single" selected={formData.dueDate || undefined} onSelect={date => setFormData({
                 ...formData,
-                dueDate: date
+                dueDate: date || null
               })} initialFocus />
               </PopoverContent>
             </Popover>
