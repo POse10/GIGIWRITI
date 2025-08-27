@@ -14,16 +14,34 @@ const ActiveUsersBar = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Reliable avatar generation using DiceBear API with fallback
-  const generateAvatar = (seed: number) => {
-    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede,d1d4f9&radius=50`;
-  };
-
-  const avatars = Array.from({ length: 5 }, (_, i) => ({
-    id: i + 1,
-    src: generateAvatar(i + 1),
-    fallback: `https://ui-avatars.com/api/?name=User${i + 1}&background=random&color=fff&size=40&rounded=true`
-  }));
+  // Real human avatars with fallback
+  const avatars = [
+    {
+      id: 1,
+      src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face&auto=format',
+      fallback: 'https://randomuser.me/api/portraits/men/1.jpg'
+    },
+    {
+      id: 2,
+      src: 'https://images.unsplash.com/photo-1494790108755-2616b612b098?w=80&h=80&fit=crop&crop=face&auto=format',
+      fallback: 'https://randomuser.me/api/portraits/women/2.jpg'
+    },
+    {
+      id: 3,
+      src: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face&auto=format',
+      fallback: 'https://randomuser.me/api/portraits/men/3.jpg'
+    },
+    {
+      id: 4,
+      src: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face&auto=format',
+      fallback: 'https://randomuser.me/api/portraits/women/4.jpg'
+    },
+    {
+      id: 5,
+      src: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=face&auto=format',
+      fallback: 'https://randomuser.me/api/portraits/men/5.jpg'
+    }
+  ];
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, fallback: string) => {
     e.currentTarget.src = fallback;
