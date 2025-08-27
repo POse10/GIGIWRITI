@@ -64,6 +64,9 @@ const Index = () => {
       <section className="relative bg-hero-gradient py-20 overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative z-10 container mx-auto px-4">
+          <div className="flex justify-center mb-8">
+            <ActiveUsersBar />
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="text-white animate-slide-in">
               <h1 className="text-4xl md:text-6xl font-poppins font-bold mb-6 leading-tight">
@@ -111,9 +114,6 @@ const Index = () => {
             </div>
             
             <div className="relative">
-              <div className="absolute -top-4 -left-4">
-                <ActiveUsersBar />
-              </div>
               <div className="animate-float">
                 <OrderForm />
               </div>
