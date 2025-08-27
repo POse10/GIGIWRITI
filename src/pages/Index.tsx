@@ -82,7 +82,7 @@ const Index = () => {
                 )}
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <a
                   href="https://form.jotform.com/252371351844456"
                   target="_blank"
@@ -96,8 +96,14 @@ const Index = () => {
                   {t('learn-more', 'Learn More', 'Tìm hiểu thêm')}
                 </Button>
               </div>
+            </div>
+            
+            <div className="relative space-y-6">
+              <div className="animate-float">
+                <OrderForm />
+              </div>
               
-              <div className="flex items-center space-x-6 text-sm">
+              <div className="flex flex-col space-y-3 text-sm text-white/90">
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-5 h-5 text-accent" />
                   <span>{t('guarantee-1', 'Plagiarism Free', 'Không đạo văn')}</span>
@@ -110,12 +116,6 @@ const Index = () => {
                   <CheckCircle className="w-5 h-5 text-accent" />
                   <span>{t('guarantee-3', '24/7 Support', 'Hỗ trợ 24/7')}</span>
                 </div>
-              </div>
-            </div>
-            
-            <div className="relative">
-              <div className="animate-float">
-                <OrderForm />
               </div>
             </div>
           </div>
