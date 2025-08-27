@@ -27,7 +27,7 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <img 
-              src="/lovable-uploads/5dfead2b-7de1-4a22-8f6f-0835d13d1d2c.png" 
+              src="/src/assets/gw-logo.png" 
               alt="GIGI WRITI Logo" 
               className="w-12 h-12 object-contain"
             />
