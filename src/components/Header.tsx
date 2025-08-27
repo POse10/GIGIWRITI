@@ -25,10 +25,12 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-primary-gradient rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">GW</span>
-            </div>
+          <Link to="/" className="flex items-center space-x-3">
+            <img 
+              src="/lovable-uploads/5dfead2b-7de1-4a22-8f6f-0835d13d1d2c.png" 
+              alt="GIGI WRITI Logo" 
+              className="w-12 h-12 object-contain"
+            />
             <span className="font-poppins font-bold text-xl text-gradient">GIGI WRITI</span>
           </Link>
 
