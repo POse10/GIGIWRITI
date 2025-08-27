@@ -21,8 +21,9 @@ const OrderForm = () => {
     words: '',
     dueDate: null as Date | null,
     aim: '',
-    discountCode: '#WELCOMETOSTUDYHUB748'
+    discountCode: ''
   });
+  const [discountApplied, setDiscountApplied] = useState(false);
   const [price, setPrice] = useState(0);
   const [currency, setCurrency] = useState<'USD' | 'VND'>('USD');
   const serviceTypes = [{
@@ -126,14 +127,28 @@ const OrderForm = () => {
     let totalPrice = basePrice * pages;
 
     // Apply discount if valid code
-    if (formData.discountCode === '#WELCOMETOSTUDYHUB748') {
+    if (discountApplied) {
       totalPrice *= 0.5; // 50% discount
     }
     return totalPrice;
   };
   useEffect(() => {
     setPrice(calculatePrice());
-  }, [formData]);
+  }, [formData, discountApplied]);
+  
+  const handleDiscountCodeChange = (value: string) => {
+    setFormData({
+      ...formData,
+      discountCode: value
+    });
+    
+    // Check if the entered code matches the correct discount code
+    if (value === '#WELCOMETOSTUDYHUB748') {
+      setDiscountApplied(true);
+    } else {
+      setDiscountApplied(false);
+    }
+  };
   const convertPrice = (usdPrice: number) => {
     return currency === 'USD' ? usdPrice : Math.round(usdPrice * 26225);
   };
@@ -235,21 +250,26 @@ const OrderForm = () => {
             </div>
           </div>
 
-          {/* Auto-applied discount notification */}
-          <div className="bg-accent/10 border border-accent/20 rounded-lg p-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
-                <span className="text-white text-sm font-bold">%</span>
+          {/* Discount Code */}
+          <div className="space-y-2">
+            <Label>{t('discount-code', 'Discount Code', 'Mã giảm giá')}</Label>
+            <Input 
+              placeholder={t('discount-placeholder', 'Enter discount code', 'Nhập mã giảm giá')}
+              value={formData.discountCode} 
+              onChange={e => handleDiscountCodeChange(e.target.value)}
+            />
+            {discountApplied && (
+              <div className="bg-accent/10 border border-accent/20 rounded-lg p-3">
+                <div className="flex items-center space-x-2">
+                  <div className="w-6 h-6 bg-accent rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">✓</span>
+                  </div>
+                  <p className="text-accent font-medium text-sm">
+                    🎉 {t('discount-applied', '50% discount applied!', 'Đã áp dụng giảm giá 50%!')}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-accent font-semibold">
-                  🎉 {t('auto-discount', 'Special Offer Applied!', 'Ưu đãi đặc biệt đã được áp dụng!')}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {t('discount-message', '50% discount automatically applied to your order', 'Giảm giá 50% tự động áp dụng cho đơn hàng của bạn')}
-                </p>
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Price Display */}
@@ -262,19 +282,19 @@ const OrderForm = () => {
                 </Button>
               </div>
             </div>
-            <div className="flex items-center justify-between">
-              <div>
+            <div className="text-2xl font-bold text-primary">
+              {currency === 'USD' ? '$' : ''}{convertPrice(price).toLocaleString()}{currency === 'VND' ? ' VND' : ''}
+            </div>
+            {discountApplied && (
+              <div className="flex items-center justify-between mt-2">
                 <div className="text-sm text-muted-foreground line-through">
                   {t('original-price', 'Original:', 'Giá gốc:')} {currency === 'USD' ? '$' : ''}{convertPrice(price * 2).toLocaleString()}{currency === 'VND' ? ' VND' : ''}
                 </div>
-                <div className="text-2xl font-bold text-accent">
-                  {currency === 'USD' ? '$' : ''}{convertPrice(price).toLocaleString()}{currency === 'VND' ? ' VND' : ''}
+                <div className="bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  50% OFF
                 </div>
               </div>
-              <div className="bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">
-                50% OFF
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Submit Button */}
