@@ -21,7 +21,7 @@ const OrderForm = () => {
     words: '',
     dueDate: null as Date | null,
     aim: '',
-    discountCode: ''
+    discountCode: '#WELCOMETOSTUDYHUB748'
   });
   const [price, setPrice] = useState(0);
   const [currency, setCurrency] = useState<'USD' | 'VND'>('USD');
@@ -235,16 +235,21 @@ const OrderForm = () => {
             </div>
           </div>
 
-          {/* Discount Code */}
-          <div className="space-y-2">
-            <Label>{t('discount-code', 'Discount Code', 'Mã giảm giá')}</Label>
-            <Input placeholder="#WELCOMETOSTUDYHUB748" value={formData.discountCode} onChange={e => setFormData({
-            ...formData,
-            discountCode: e.target.value
-          })} />
-            {formData.discountCode === '#WELCOMETOSTUDYHUB748' && <p className="text-sm text-accent font-medium">
-                ✅ {t('discount-applied', '50% discount applied!', 'Đã áp dụng giảm giá 50%!')}
-              </p>}
+          {/* Auto-applied discount notification */}
+          <div className="bg-accent/10 border border-accent/20 rounded-lg p-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                <span className="text-white text-sm font-bold">%</span>
+              </div>
+              <div>
+                <p className="text-accent font-semibold">
+                  🎉 {t('auto-discount', 'Special Offer Applied!', 'Ưu đãi đặc biệt đã được áp dụng!')}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {t('discount-message', '50% discount automatically applied to your order', 'Giảm giá 50% tự động áp dụng cho đơn hàng của bạn')}
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Price Display */}
@@ -257,12 +262,19 @@ const OrderForm = () => {
                 </Button>
               </div>
             </div>
-            <div className="text-2xl font-bold text-primary">
-              {currency === 'USD' ? '$' : ''}{convertPrice(price).toLocaleString()}{currency === 'VND' ? ' VND' : ''}
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-sm text-muted-foreground line-through">
+                  {t('original-price', 'Original:', 'Giá gốc:')} {currency === 'USD' ? '$' : ''}{convertPrice(price * 2).toLocaleString()}{currency === 'VND' ? ' VND' : ''}
+                </div>
+                <div className="text-2xl font-bold text-accent">
+                  {currency === 'USD' ? '$' : ''}{convertPrice(price).toLocaleString()}{currency === 'VND' ? ' VND' : ''}
+                </div>
+              </div>
+              <div className="bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">
+                50% OFF
+              </div>
             </div>
-            {formData.discountCode === '#WELCOMETOSTUDYHUB748' && <div className="text-sm text-muted-foreground line-through">
-                {t('original-price', 'Original:', 'Giá gốc:')} {currency === 'USD' ? '$' : ''}{convertPrice(price * 2).toLocaleString()}{currency === 'VND' ? ' VND' : ''}
-              </div>}
           </div>
 
           {/* Submit Button */}
