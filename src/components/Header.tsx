@@ -25,12 +25,10 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <img 
-              src="/src/assets/gw-logo.png" 
-              alt="GIGI WRITI Logo" 
-              className="w-12 h-12 object-contain"
-            />
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="w-10 h-10 bg-primary-gradient rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-lg">GW</span>
+            </div>
             <span className="font-poppins font-bold text-xl text-gradient">GIGI WRITI</span>
           </Link>
 
@@ -50,7 +48,7 @@ const Header = () => {
                   >
                     <span className="relative z-10">{item.label}</span>
                     {location.pathname === item.href && (
-                      <div className="absolute inset-0 bg-[#FF8040] shadow-lg shadow-[#FF8040]/50 animate-pulse opacity-80"></div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-glow to-primary animate-pulse opacity-80"></div>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                   </Link>
